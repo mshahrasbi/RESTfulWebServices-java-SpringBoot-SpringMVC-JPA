@@ -19,6 +19,7 @@ import com.mycompanyname.app.ws.service.AddressService;
 import com.mycompanyname.app.ws.service.UserService;
 import com.mycompanyname.app.ws.shared.dto.AddressDto;
 import com.mycompanyname.app.ws.shared.dto.UserDto;
+import com.mycompanyname.app.ws.ui.model.request.PasswordResetModel;
 import com.mycompanyname.app.ws.ui.model.request.PasswordResetRequestModel;
 import com.mycompanyname.app.ws.ui.model.request.UserDetailsRequestModel;
 import com.mycompanyname.app.ws.ui.model.response.*;
@@ -205,6 +206,27 @@ public class UserController {
 		returnValue.setOperationResult(RequestOperationStatus.ERROR.name());
 		
 		if (operationalResult) {
+			returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
+		}
+		
+		return returnValue;
+	}
+
+
+	/*
+	 * http://localhost:808/mobile-app-ws/users/password-reset
+	 */
+	@PostMapping(path = "/password-reset",
+			consumes = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_XML_VALUE})	
+	public OperationStatusModel resetPassword(@RequestBody PasswordResetModel passwordResetModel) {
+		OperationStatusModel returnValue = new OperationStatusModel();
+		
+		boolean operationResult = userService.resetPassword(passwordResetModel.getToken(), passwordResetModel.getPassword());
+		
+		returnValue.setOperationName(RequestOperationStatus.PASSWORD_RESET.name());
+		returnValue.setOperationName(RequestOperationStatus.ERROR.name());
+		
+		if (operationResult) {
 			returnValue.setOperationResult(RequestOperationStatus.SUCCESS.name());
 		}
 		
